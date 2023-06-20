@@ -1,0 +1,45 @@
+{% block body %}
+<h1>Product List</h1>
+
+<form method = 'GET'>
+    <div class="input-group">
+        <input type="text" name = "name"  class="form-control form-control-lg" placeholder="Search" />
+        <div class="input-group-append">
+        <button class="btn btn-dark btn-lg" type="submit" id="button-addon2">Search</button>
+        </div>
+    </div>
+</form>
+<ul>
+  {% for product in products %}
+  <li>
+    <a href="#">{{ product.name|title }} -- {{product.total_price}}</a>
+    <br />
+    {% if product.content %} 
+    Description: {{ product.content|safe}} 
+    {%else%} No description {% endif %}
+    <p> Created_at: {{ product.created_at}}</p>
+  </li>
+  {% endfor %}
+</ul>
+
+
+{% if products.has_other_pages %}
+<nav class="my-3 container">
+    <ul class="pagination">
+        {% if products.has_previous %}
+      <li class="page-item"><a href="?page={{products.previous_page_number}}">Previous</a></li>
+      {% endif %}
+      {% for i in products.paginator.page_range %}
+      {% if products.number == i %}
+      <li class="page-item active"><a href="#">{{i}}</a></li>
+      {% else %}
+      <li class="page-item"><a href="?page={{i}}">{{i}}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if products.has_next %}
+      <li class="page-item"><a href="?page={{products.next_page_number}}">Next</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
+{% endblock %}
